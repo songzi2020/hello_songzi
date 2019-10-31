@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 
 import time
 import requests
@@ -139,5 +134,5 @@ def plan_v7(x1):
             print(e)
             time.sleep(50)
             
-plan_v7(60)   
+plan_v7(1660)   
 
