@@ -1,4 +1,3 @@
-
 import time
 import requests
 import json
@@ -91,19 +90,23 @@ def plan_v7(x1):
             df = data['main'].copy()
 # --------------------------------------------------------------------------------------------------------------            
             for i in range(28):
-                data.iloc[i,0] = data.iloc[i,1] * data.iloc[i,2]
+                data.loc[i,'sort'] = data.loc[i,'main'] * data.loc[i,'now']
             df1 = data['sort'].copy()
+#             print(df1)
 #             df1 = abs(df1 - 1000*x)
             df1 = df1 - 1000*x
-            df2 = df1.sort_values().copy()
+            df2 = df1.sort_values(ascending=False).copy()
+#             print('\n',df2)
             for i in range(20):
                 if df.sum() > money_down:
-                    if df.sum() - data.iloc[int(df2.index[i]),1] > money_down:
+                    if df.sum() - data.loc[int(df2.index[i]),'main'] > money_down:
+                        
                         df[int(df2.index[i])] = 0
-                        print('{}'.format(df2.index[i]),end=",")
-                else:
-                    break
-            leiji = df.sum()        
+                        print('{}'.format(df2.index[i]),end=",")                        
+                    else:
+                        break
+            leiji = df.sum()   
+            print('比例:{:.2f}'.format(df.sum()/(1000*x)),end=",")
 # --------------------------------------------------------------------------------------------------------------
             put_info.append(leiji)      
             if leiji > 0 :              
@@ -111,7 +114,7 @@ def plan_v7(x1):
                 xstr = ",".join(ls)        # 结果字符串
                 print('】投入【{}】'.format(leiji),end=",")
                 url2 = 'http://ifsapp.pceggs.com/IFS/Riddle28/riddle28_Betting.ashx?issue='+str(number)+'&totalgoldeggs='+str(leiji)+'&bettinglist='+xstr+'&' + part
-                time.sleep(3)
+                time.sleep(2)
                 response = requests.get(url2,headers=headers,params=params,timeout=5).json()
             #     判断是否成功
                 print(response['msg'],end=",")
@@ -134,5 +137,5 @@ def plan_v7(x1):
             print(e)
             time.sleep(50)
             
-plan_v7(1660)   
+plan_v7(2768)   
 
